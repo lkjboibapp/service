@@ -75,6 +75,65 @@ $app->get('/getfaq_type' , function($request , $response , $args){ //เงื�
 
     $conn->close();
 });
+//
+$app->get('/getfaq' , function($request , $response , $args){ //เงือ่ไขหน้าบ้าน
+
+    include 'conn.php';
+
+    $json = $request->getBody(); //POST
+    $jsonArr = json_decode($json, true, 512, JSON_UNESCAPED_UNICODE); //POST
+    $faq_type_id = $jsonArr['faq_type_id'];
+  
+	 	if($faq_type_id  == "")
+		 	{
+		        $sql = "SELECT * FROM cms_faq WHERE active = 'y'";
+		    }
+		    	else 
+		    		{ //WHERE Condition SQL Start!
+				        $sql = "SELECT * FROM cms_faq WHERE faq_type_id = '$faq_type_id'  AND active = 'y'";
+		    		}
+
+    $result = $conn->query($sql);
+    $arr = array();
+	    if ($result->num_rows > 0)
+	    	{
+				$arr["results"] = "successfully";
+
+			    // output data of each row
+			    while($row = $result->fetch_assoc())
+			    	{
+				        $faq_type_id = $row['faq_type_id'];
+        				$faq_THtopic = $row['faq_THtopic'];
+        				$faq_THanswer = $row['faq_THanswer'];
+        				$create_date = $row['create_date'];
+        				$create_by = $row['create_by'];
+        				$update_date = $row['update_date'];
+        				$update_by = $row['update_by'];
+        				$active = $row['active'];
+
+
+					        $data = (object)array('faq_type_id' => $faq_type_id,
+					                              'faq_THtopic' => $faq_THtopic,
+					                               'faq_THanswer' => $faq_THanswer,
+					                               'create_date' => $create_date,
+					                               'create_by' => $create_by,
+					                               'update_date' => $update_date,
+					                               'update_by' => $update_by,
+					                               'active' => $active
+					                            );
+					        $arr["data"][] = $data;
+			    	}
+	     	}
+	     		else
+	     			{
+	    				$arr["results"] = "error";
+	    				$arr["data"] = "failed";
+	    			}
+
+		echo json_encode($arr , JSON_UNESCAPED_UNICODE);
+
+    $conn->close();
+});
 
 ////Delate   
 $app->post('/deletefaq_type', function($request , $response , $args)  
