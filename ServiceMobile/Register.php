@@ -35,12 +35,17 @@ $app->post('/InsertRegister' , function($request , $response , $args){
         $request = json_decode($postdata);
 
           if(isset($request->identification)){
-             $identification = $request->identification;
+             $password = md5($request->identification);
           // $contac_by_name = $jsonArr['contac_by_name'];
          }else {
           $error[] = "contac_by_name is required.";
          }
-       
+         if(isset($request->identification)){
+          $identification = $request->identification;
+       // $contac_by_name = $jsonArr['contac_by_name'];
+         }else {
+          $error[] = "contac_by_name is required.";
+         }
           if(isset($request->email)){
         $email = $request->email;
           // $contac_by_surname = $jsonArr['contac_by_surname'];
@@ -96,7 +101,7 @@ $app->post('/InsertRegister' , function($request , $response , $args){
         if (isset($request->identification) != "") {
            $sqluser = "INSERT INTO tbl_users (username, password, email, orgchart_lv2)
              
-            VALUES ('$email', '$identification' , '$email','$title')";
+            VALUES ('$email', '$password' , '$email','$title')";
 
             
 
