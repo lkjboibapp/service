@@ -25,29 +25,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 $app = new Slim\App();
 
-$app->get('/getLesson/{course_id}' , function($request , $response , $args){ //เงือ่ไข
-
-	$course_id = $args['course_id'];
+$app->post('/getLesson' , function($request , $response , $args){ //เงือ่ไข
 
     include 'conn.php';
 
     $json = $request->getBody(); //POST
     $jsonArr = json_decode($json, true, 512, JSON_UNESCAPED_UNICODE); //POST
-    //  $course_id = isset($jsonArr['course_id'])?$jsonArr['course_id']:"";
-    
+    $course_id = isset($jsonArr['course_id'])?$jsonArr['course_id']:"";
+
 	 	if($course_id == "")
 		 	{
 		        $sql = "SELECT * FROM tbl_lesson WHERE active = 'y'" ;
 		    }
-		    	else 
+		    	else
 		    		{ //WHERE Condition SQL Start!
 				        $sql = "SELECT * FROM tbl_lesson WHERE course_id = '$course_id' AND active = 'y'";
 		    		}
-    $result = $conn->query($sql);
-    $arr = array();
+	$result = $conn->query($sql);
+var_dump($result);
+exit();
+	$arr = array();
+
 	    if ($result->num_rows > 0)
 	    	{
 				$arr["results"] = "successfully";
+
 				while($row = $result->fetch_assoc())
 				{
 					  	$course_id = $row['course_id'];
@@ -86,11 +88,11 @@ $app->get('/getLesson/{course_id}' , function($request , $response , $args){ //�
                                                    'view_all' => $view_all,
                                                    'status' => $status,
                                                    'lesson_no' => $lesson_no,
-                                                   'active' => $active,
-                                                   
+                                                   'active' => $active
 					                            );
-					$arr["data"][] = $data;
 				}
+			
+					$arr["data"] = $data;
 					// mysqli_close($conn);
 				// return json_encode($arr);
 	     	}

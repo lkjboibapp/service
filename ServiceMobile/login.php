@@ -7,7 +7,7 @@ $app->POST('/login', function($request , $response , $args)  {
 
 	include 'conn.php';
 
-	 $json = $request->getBody(); //POST
+	$json = $request->getBody(); //POST
     $jsonArr = json_decode($json, true, 512, JSON_UNESCAPED_UNICODE); //
     $username = isset($jsonArr['username'])?$jsonArr['username']:"";
     $password = isset($jsonArr['password'])?mysqli_real_escape_string($conn,md5($jsonArr['password'])):$jsonArr['password'];
