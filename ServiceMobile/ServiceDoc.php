@@ -27,16 +27,18 @@ $app->get('/getdocs' , function($request , $response , $args){ //เงื่อ
 
     $json = $request->getBody(); //POST
     $jsonArr = json_decode($json, true, 512, JSON_UNESCAPED_UNICODE); //POST
-     $dow_id = $jsonArr['dty_id'];
+	 $dow_id = $jsonArr['dty_id'];
+	// $dow_address = $jsonArr['dow_address'];
+	 
     
 	 	if($dow_id == "")
 		 	{
-		        $sql = "SELECT cms_download_type.dty_id,cms_download_type.dty_name, cms_download.dow_name, cms_download.dow_detail FROM cms_download_type 
+		        $sql = "SELECT cms_download_type.dty_id,cms_download_type.dty_name, cms_download.dow_name, cms_download.dow_detail, cms_download.dow_address FROM cms_download_type 
     INNER JOIN cms_download ON cms_download_type.dty_id = cms_download.dty_id WHERE cms_download_type.active = '1'";
 		    }
 		    	else 
 		    		{ //WHERE Condition SQL Start!
-				       $sql = "SELECT  cms_download_type.dty_id,cms_download_type.dty_name, cms_download.dow_name, cms_download.dow_detail FROM cms_download_type 
+				       $sql = "SELECT  cms_download_type.dty_id,cms_download_type.dty_name, cms_download.dow_name, cms_download.dow_detail, cms_download.dow_address FROM cms_download_type 
     INNER JOIN cms_download ON cms_download_type.dty_id = cms_download.dty_id WHERE cms_download_type.active = '1' AND cms_download_type.dty_id = '$dow_id'";
 		    		}
 		    		
@@ -51,12 +53,13 @@ $app->get('/getdocs' , function($request , $response , $args){ //เงื่อ
         				$dty_name = $row['dty_name'];
         				// $dow_name = $row['dow_name'];
         				$dow_detail = $row['dow_detail'];
-				        
+				        $dow_address = $row['dow_address'];
         				
 					        $data[] = (object)array('dty_id' => $cms_download_type,
 					        	'dty_name' => $dty_name,
 					        	// 'dow_name' => $dow_name,
-					        	'dow_detail' => $dow_detail
+								'dow_detail' => $dow_detail,
+								'dow_address' => $dow_address
 
 					                            
 					                            );
