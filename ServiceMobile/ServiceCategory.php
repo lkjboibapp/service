@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 $app = new Slim\App();
 
-$app->get('/getCategory' , function($request , $response , $args){ //เงือ่ไข
+$app->post('/getCategory' , function($request , $response , $args){ //เงือ่ไข
 
     include 'conn.php';
 
