@@ -107,22 +107,22 @@ $app->post('/InsertRegister' , function($request , $response , $args){
 
            if (mysqli_query($conn,$sqluser)) 
            {
-            $sqlprofile = "INSERT INTO tbl_contactus (contac_by_name, contac_by_surname, contac_by_email, contac_by_tel, contac_subject, contac_detail)
+            $sqlprofile = "INSERT INTO tbl_profiles (title_id, firstname, lastname, identification, occupation, address)
              
-            VALUES ('$identification', '$title_id' , '$firstname','$lastname','$department','$job')";
+            VALUES ('$title_id', '$firstname' , '$lastname','$identification','$job','$department')";
               if (mysqli_query($conn, $sqlprofile)) 
                  {
                    $arr['result'] = 'success';
-                   $arr['data'] = "Successfully";
+                   $arr['data'] = "Successfully123";
                    echo json_encode($arr , JSON_UNESCAPED_UNICODE);
                   }
 
                  
               else 
                 {
-                      $arr['result'] = 'false';
-                      $arr['data'] = "Error: " . $sql . "<br>" . mysqli_error($conn);
-                      echo json_encode($arr , JSON_UNESCAPED_UNICODE);
+                      // $arr['result'] = 'false';
+                      // $arr['data'] = "Error: " . $sql . "<br>" . mysqli_error($conn);
+                      // echo json_encode($arr , JSON_UNESCAPED_UNICODE);
                 }
           } 
 
