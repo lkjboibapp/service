@@ -24,7 +24,7 @@ require 'vendor/autoload.php';
  
     $app = new Slim\App();
 
-    $app->get('/getImgslide' , function($request , $response , $args){
+    $app->post('/getImgslide' , function($request , $response , $args){
 
         include 'conn.php';
     
