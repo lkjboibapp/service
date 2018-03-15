@@ -21,7 +21,7 @@ require 'vendor/autoload.php';
 
     $app = new Slim\App();
 
-    $app->get('/getProfile' , function($request , $response , $args){
+    $app->post('/getProfile' , function($request , $response , $args){
 
         include 'conn.php';
     
