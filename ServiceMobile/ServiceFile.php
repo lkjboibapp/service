@@ -25,14 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 $app = new Slim\App();
 
-$app->get('/getFile/{lesson_id}' , function($request , $response , $args){ //เงือ่ไข
+$app->post('/getFile' , function($request , $response , $args){ //เงือ่ไข
 
-    $lesson_id = $args['lesson_id'];
     include 'conn.php';
 
     $json = $request->getBody(); //POST
     $jsonArr = json_decode($json, true, 512, JSON_UNESCAPED_UNICODE); //POST
-    //  $lesson_id = isset($jsonArr['lesson_id'])?$jsonArr['lesson_id']:"";
+     $lesson_id = isset($jsonArr['lesson_id'])?$jsonArr['lesson_id']:"";
     
 	 	if($lesson_id == "")
 		 	{
