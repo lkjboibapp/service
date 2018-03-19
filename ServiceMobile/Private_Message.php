@@ -60,7 +60,6 @@ $app = new Slim\App();
             $all_file = isset($request->all_file)?$request->all_file:""; 
             $create_date = date("Y-m-d H:i:s");
             $update_date = date("Y-m-d H:i:s");
-            
 
                 if (isset($request->pm_to) != "")
                     {
@@ -69,8 +68,17 @@ $app = new Slim\App();
 
                         if (mysqli_query($conn, $sql)) 
                             {
-                                $arr['result'] = 'success';
-                                $arr['data'] = "Successfully";
+                                $pm_id = mysqli_insert_id($conn);
+
+                                $sql = "INSERT INTO private_message_return (pm_id,pmr_return , all_file_return_pm, create_date, update_date,create_by)
+                                VALUES ('$pm_id','$pm_quest','$all_file', '$create_date','$update_date','$create_by')";
+
+                            if (mysqli_query($conn, $sql)) 
+                                {
+                                    $arr['result'] = 'success';
+                                    $arr['data'] = "Successfully->".$pm_id;
+                                }
+
                             } 
                                 else 
                                     {
