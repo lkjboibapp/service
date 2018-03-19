@@ -47,14 +47,25 @@ $app = new Slim\App();
                         {
                             $error[] = "question_status is required.";
                         }
+            
+              if(isset($request->create_by))
+                {
+                    $create_by = $request->create_by;
+                }
+                    else 
+                        {
+                            $error[] = "question_status is required.";
+                        }
 
             $all_file = isset($request->all_file)?$request->all_file:""; 
             $create_date = date("Y-m-d H:i:s");
+            $update_date = date("Y-m-d H:i:s");
+            
 
                 if (isset($request->pm_to) != "")
                     {
-                        $sql = "INSERT INTO private_message (pm_topic, pm_quest, pm_to, question_status, all_file, create_date)
-                                    VALUES ('$pm_topic','$pm_quest','$pm_to','$question_status','$all_file', '$create_date')";
+                        $sql = "INSERT INTO private_message (pm_topic, pm_quest, pm_to, question_status, all_file, create_date, update_date,create_by)
+                                    VALUES ('$pm_topic','$pm_quest','$pm_to','$question_status','$all_file', '$create_date','$update_date','$create_by')";
 
                         if (mysqli_query($conn, $sql)) 
                             {
@@ -84,17 +95,17 @@ $app = new Slim\App();
     });
 
 
-$app->get('/getPrivateMessage' , function($request , $response , $args){
+$app->post('/getPrivateMessage' , function($request , $response , $args){
     include 'conn.php';
 
     $json = $request->getBody(); //POST
     $jsonArr = json_decode($json, true, 512, JSON_UNESCAPED_UNICODE); //
 
-    if(isset($jsonArr['pm_id'])){
-         	   $pm_id = $jsonArr['pm_id'];
-         	   $sql = "SELECT * FROM private_message WHERE pm_id = '$pm_id' AND active = 'y'";
-         }else if (isset($jsonArr['pm_id'])== "") {
-         	  	$sql = "SELECT * FROM private_message WHERE active = 'y'";
+    if(isset($jsonArr['create_by'])){
+         	   $create_by = $jsonArr['create_by'];
+         	   $sql = "SELECT * FROM private_message WHERE create_by = '$create_by' AND active = 'y' ORDER BY pm_id DESC";
+         }else if (isset($jsonArr['create_by'])== "") {
+         	  	$sql = "SELECT * FROM private_message WHERE active = 'y' ORDER BY pm_id DESC";
          }else {
          	$error[] = "Unsuccessful";
          }
