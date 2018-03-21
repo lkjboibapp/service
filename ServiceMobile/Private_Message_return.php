@@ -67,6 +67,49 @@ echo json_encode($arr , JSON_UNESCAPED_UNICODE);
 
 $conn->close();
 });
+
+
+$app->post('/insertMassage', function($request , $response , $args)  {
+
+	include 'conn.php';
+
+	$json = $request->getBody(); //POST
+    $jsonArr = json_decode($json, true, 512, JSON_UNESCAPED_UNICODE); //POST
+    $pm_id = isset($jsonArr['pm_id'])?$jsonArr['pm_id']:"";
+    $pmr_return = isset($jsonArr['pmr_return'])?$jsonArr['pmr_return']:"";
+    $create_by = isset($jsonArr['create_by'])?$jsonArr['create_by']:"";
+    $all_file_return_pm = isset($jsonArr['all_file_return_pm'])?$jsonArr['all_file_return_pm']:"";
+    $create_date = date("Y-m-d H:i:s");
+    $update_date = date("Y-m-d H:i:s");
+
+    if(!empty($pm_id))
+			{
+				$sql = "INSERT INTO private_message_return (pm_id,pmr_return,create_date,create_by,update_date,all_file_return_pm)
+                        VALUES ('$pm_id','$pmr_return','$create_date','$create_by','$update_date','$all_file_return_pm')";
+        
+                 if (mysqli_query($conn, $sql)) 
+                    {
+                         $arr['result'] = 'success';
+                        $arr['data'] = "Successfully->";
+                    }
+                        else 
+                            {
+                                $arr['result'] = 'false';
+                                $arr['data'] = "Error: " . $sql . "<br>" . mysqli_error($conn);
+                            }
+            }
+                else 
+                    {
+                        $arr['result'] = 'ส่งข้อความไม่สำเร็จ';
+                        $arr['data'] = "Successfully";
+                    }
+
+echo json_encode($arr , JSON_UNESCAPED_UNICODE);
+
+$conn->close();
+});
+
+
 $app->run();
 ?>
 
