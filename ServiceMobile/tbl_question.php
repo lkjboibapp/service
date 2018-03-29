@@ -66,7 +66,7 @@ $app->post('/get' , function($request , $response , $args){ //เงือ่ไ
                         $update_date = $row['update_date'];
         				$update_by = $row['update_by'];
         				$active = $row['active'];
-                        
+
 					$data = (object)array('ques_id' => $ques_id,
 					                              'group_id' => $group_id,
 					                              'ques_type' => $ques_type,
