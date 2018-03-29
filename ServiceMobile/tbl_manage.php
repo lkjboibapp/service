@@ -25,20 +25,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 $app = new Slim\App();
 
-$app->get('/getManage' , function($request , $response , $args){ //เงือ่ไข
+$app->post('/getManage' , function($request , $response , $args){ //เงือ่ไข
 
     include 'conn.php';
 
     $json = $request->getBody(); //POST
     $jsonArr = json_decode($json, true, 512, JSON_UNESCAPED_UNICODE); //POST
-     $id = isset($jsonArr['id'])?$jsonArr['id']:"";
+	 $id = isset($jsonArr['id'])?$jsonArr['id']:"";
+     $group_id = isset($jsonArr['group_id'])?$jsonArr['group_id']:"";
+	 
     
-	 	if($id == "")
+	 	if(empty($id))
 		 	{
 		        $sql = "SELECT * FROM tbl_manage WHERE active = 'y'" ;
 		    }
 		    	else 
-		    		{ //WHERE Condition SQL Start!
+					{
+						if (!empty($group_id)) 
+							{
+								$sql = "SELECT * FROM tbl_manage WHERE id = '$id' AND active = 'y' AND group_id = '$group_id'";		
+							}
 				        $sql = "SELECT * FROM tbl_manage WHERE id = '$id' AND active = 'y'";
 		    		}
     $result = $conn->query($sql);
